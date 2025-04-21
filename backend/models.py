@@ -111,3 +111,17 @@ class BookAuthor(models.Model):
     class Meta:
         db_table = 'book_author'
         unique_together = ('book', 'author')  # prevents duplicate author entries for a book
+
+
+class Loan(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    member = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    loan_date = models.DateField()
+    returned_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return f"{self.member.email} - {self.book.title}"
+
+    class Meta:
+        db_table = 'loan'
