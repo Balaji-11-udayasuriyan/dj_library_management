@@ -62,3 +62,23 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+
+class AuthorUser(CustomUser):
+    class Meta:
+        proxy = True
+        verbose_name = 'Author'
+        verbose_name_plural = 'Authors'
+
+
+class MemberUser(CustomUser):
+    class Meta:
+        proxy = True
+        verbose_name = 'Member'
+        verbose_name_plural = 'Members'
+
+
+class AdminUser(CustomUser):
+    class Meta:
+        proxy = True
+        verbose_name = 'Admin'
+        verbose_name_plural = 'Admins'
