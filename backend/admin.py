@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Category,AdminUser,AuthorUser,MemberUser,CustomUser,BookAuthor,Book
+from .models import Category,AdminUser,AuthorUser,MemberUser,CustomUser,BookAuthor,Book,Loan,Fine,FinePayment
 from backend.forms import CustomUserChangeForm,CustomUserCreationForm
 from django.db.models import Q
 from django.utils.html import format_html
@@ -88,3 +88,42 @@ class BookAdmin(admin.ModelAdmin):
 def get_member_queryset():
     return CustomUser.objects.filter(groups__name='Member')
 
+# ---------- Inline for Loans in BookAdmin (Optional) ----------
+class LoanInline(admin.TabularInline):
+    model = Loan
+    extra = 1
+
+# ---------- Loan Admin ----------
+@admin.register(Loan)
+class LoanAdmin(admin.ModelAdmin):
+    list_display = ('book', 'member', 'loan_date', 'returned_date')
+    list_filter = ('loan_date', 'returned_date', 'book')
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "member":
+            kwargs["queryset"] = get_member_queryset()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+# ---------- Fine Admin ----------
+@admin.register(Fine)
+class FineAdmin(admin.ModelAdmin):
+    list_display = ('member', 'loan', 'fine_date', 'fine_amount')
+    list_filter = ('fine_date',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "member":
+            kwargs["queryset"] = get_member_queryset()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+
+# ---------- Fine Payment Admin ----------
+@admin.register(FinePayment)
+class FinePaymentAdmin(admin.ModelAdmin):
+    list_display = ('member', 'payment_date', 'payment_amount')
+    list_filter = ('payment_date',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "member":
+            kwargs["queryset"] = get_member_queryset()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
