@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Category,AdminUser,AuthorUser,MemberUser,CustomUser,BookAuthor,Book
 from backend.forms import CustomUserChangeForm,CustomUserCreationForm
 from django.db.models import Q
+from django.utils.html import format_html
 
 from django.contrib.auth.admin import UserAdmin
 
@@ -28,7 +29,7 @@ class BaseCustomUserAdmin(UserAdmin):
 
     def image_tag(self, obj):
         if obj.image:
-            return format_html('<img src="{}" width="50" height="50" />', obj.image.url)
+            return format_html('<img src="{}" width="100" height="100" />', obj.image.url)
         return "-"
     image_tag.short_description = 'Image'
 
