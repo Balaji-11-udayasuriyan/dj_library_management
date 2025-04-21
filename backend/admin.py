@@ -1,9 +1,8 @@
 from django.contrib import admin
-from .models import Category,AdminUser,AuthorUser,MemberUser,CustomUser,BookAuthor,Book,Loan,Fine,FinePayment
+from .models import Category,AdminUser,AuthorUser,MemberUser,CustomUser,BookAuthor,Book,Loan,Fine,FinePayment,Reservation
 from backend.forms import CustomUserChangeForm,CustomUserCreationForm
 from django.db.models import Q
 from django.utils.html import format_html
-
 from django.contrib.auth.admin import UserAdmin
 
 
@@ -122,6 +121,17 @@ class FineAdmin(admin.ModelAdmin):
 class FinePaymentAdmin(admin.ModelAdmin):
     list_display = ('member', 'payment_date', 'payment_amount')
     list_filter = ('payment_date',)
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == "member":
+            kwargs["queryset"] = get_member_queryset()
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+# ---------- Reservation Admin ----------
+@admin.register(Reservation)
+class ReservationAdmin(admin.ModelAdmin):
+    list_display = ('book', 'member', 'reservation_date', 'reservation_status')
+    list_filter = ('reservation_date', 'reservation_status', 'book')
 
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         if db_field.name == "member":
