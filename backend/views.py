@@ -1,3 +1,13 @@
 from django.shortcuts import render
+from .models import AuthorUser, Category
 
-# Create your views here.
+
+def dashboard_callback(request, context):
+    author_count = AuthorUser.objects.count()
+
+    context.update({
+        "author_count": author_count,
+        "custom_message": "welcome to the admin",
+    })
+
+    return context

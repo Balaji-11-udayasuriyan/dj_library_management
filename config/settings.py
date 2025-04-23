@@ -58,7 +58,7 @@ ROOT_URLCONF = 'config.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -134,4 +134,5 @@ UNFOLD = {
     "SITE_TITLE": "My Admin",
     "SITE_HEADER": "Dashboard",
     "SHOW_COUNTS": True,
+    "DASHBOARD_CALLBACK": "backend.views.dashboard_callback",
 }
