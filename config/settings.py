@@ -130,3 +130,8 @@ AUTH_USER_MODEL = 'backend.CustomUser'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 MEDIA_URL = '/media/'
 
+UNFOLD = {
+    "SITE_TITLE": "My Admin",
+    "SITE_HEADER": "Dashboard",
+    "SHOW_COUNTS": True,
+}
