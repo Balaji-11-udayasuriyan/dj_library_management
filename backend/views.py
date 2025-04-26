@@ -11,3 +11,6 @@ def dashboard_callback(request, context):
     })
 
     return context
+
+def category_badge_callback(request):
+    return Category.objects.count()
