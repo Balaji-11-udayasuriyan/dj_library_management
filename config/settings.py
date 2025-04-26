@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'backend'
+    'backend',
+    'frontend'
 ]
 
 MIDDLEWARE = [
@@ -130,9 +131,43 @@ AUTH_USER_MODEL = 'backend.CustomUser'
 MEDIA_ROOT = os.path.join(BASE_DIR / 'media')
 MEDIA_URL = '/media/'
 
+from django.urls import reverse_lazy
+from django.utils.translation import gettext_lazy as _
+
 UNFOLD = {
     "SITE_TITLE": "My Admin",
     "SITE_HEADER": "Dashboard",
     "SHOW_COUNTS": True,
     "DASHBOARD_CALLBACK": "backend.views.dashboard_callback",
+
+"SIDEBAR": {
+        "show_search": False,  # Search in applications and models names
+        "show_all_applications": False,  # Dropdown with all applications and models
+        "navigation": [
+            {
+                "title": _("Navigation"),
+                "separator": True,  # Top border
+                "collapsible": True,  # Collapsible group of links
+                "items": [
+                    {
+                        "title": _("Dashboard"),
+                        "icon": "dashboard",  # Supported icon set: https://fonts.google.com/icons
+                        "link": reverse_lazy("admin:index"),
+                        "badge": "backend.views.badge_callback",
+                        "permission": lambda request: request.user.is_superuser,
+                    },
+                    {
+                        "title": _("Users"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:auth_user_changelist"),
+                    },
+{
+                        "title": _("Category"),
+                        "icon": "people",
+                        "link": reverse_lazy("admin:backend_category_changelist")
+                    },
+                ],
+            },
+        ],
+    },
 }
