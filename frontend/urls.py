@@ -1,11 +1,13 @@
 from tkinter.font import names
 
 from django.urls import path
-from . import views
-from .views import home, member_register
+from .views import home, member_register, fines_view, dashboard, member_login, member_logout
 
 urlpatterns = [
-    path('', views.home, name ='home'),
-    path('register/', views.member_register, name ='register'),
-    path('dashboard/', views.dashboard, name = 'dashboard')
+    path('', home, name ='home'),
+    path('register/', member_register, name ='register'),
+    path('login/', member_login, name= 'login'),
+    path('logout/', member_logout, name='logout'),
+    path('dashboard/', dashboard, name = 'dashboard'),
+
 ]
